@@ -86,6 +86,34 @@ void LinkedList<T>::insertOrdered(const T& newData) {
   // -----------------------------------------------------------
   // Please implement this function according to the description
   // above and in the instructions PDF.
+  if(!head_){
+    this -> pushFront(newData);
+    return ;
+  }
+
+  Node* cur = head_;
+
+  if (newData < cur -> data){
+    this -> pushFront(newData);
+    return ;
+  }else{
+    while(cur -> next != nullptr && (cur -> next) -> data < newData ){
+      cur = cur -> next;
+    }
+
+    if(! cur -> next){
+      this -> pushBack(newData);
+      return ;
+    }else{
+      Node * newNode = new Node(newData);
+      newNode -> next = cur -> next;
+      cur -> next -> prev = newNode;
+      cur -> next = newNode;
+      newNode -> prev = cur;
+      size_++;
+      return;
+    }
+  }
 
   // Hints:
   // Make your new node on the heap and then find where it needs to
@@ -223,6 +251,26 @@ LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
   // the function.
   LinkedList<T> merged;
 
+  while(!left.empty() && !right.empty()){
+    if(left.front() <= right.front()){
+      merged.pushBack(left.front());
+      left.popFront();
+    }else{
+      merged.pushBack(right.front());
+      right.popFront();
+    }
+  }
+  
+  while(!right.empty()){
+      merged.pushBack(right.front());
+      right.popFront();
+  }
+
+  while(!left.empty()){
+    merged.pushBack(left.front());
+    left.popFront();
+  }
+  
   // -----------------------------------------------------------
   // TODO: Your code here!
   // -----------------------------------------------------------
@@ -243,6 +291,8 @@ LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
   //    time or worse, and not O(n).
   // 4. Remember, DO NOT try to use insertOrdered here. That would be
   //    very slow.
+
+
 
   // -----------------------------------------------------------
 

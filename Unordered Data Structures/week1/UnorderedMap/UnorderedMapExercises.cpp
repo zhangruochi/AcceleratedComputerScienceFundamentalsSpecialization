@@ -53,9 +53,17 @@
 StringIntMap makeWordCounts(const StringVec& words) {
   StringIntMap wordcount_map;
 
+
   // =================================================
   // EXERCISE 1 WORKSPACE: YOUR CODE HERE
   // =================================================
+  for(std::string word : words){
+    if (wordcount_map.find(word) == wordcount_map.end()){
+      wordcount_map[word] = 1;
+    }else{
+      wordcount_map[word] += 1;
+    }
+  }
 
   return wordcount_map;
 }
@@ -100,8 +108,10 @@ int lookupWithFallback(const StringIntMap& wordcount_map, const std::string& key
   // =================================================
   // EXERCISE 2 WORKSPACE: YOUR CODE HERE
   // =================================================
-
-  return -1337; // Change this!
+  if (wordcount_map.find(key) != wordcount_map.end())
+    return wordcount_map.at(key);
+  else
+    return fallbackVal; // Change this!
 }
 
 
@@ -214,9 +224,8 @@ int memoizedLongestPalindromeLength(LengthMemo& memo, const std::string& str, in
     // new in this case. So, we also won't store anything new in the table in
     // this case, only return what's already stored at this key in the map.
 
-    return -1337; // Hint: You need to change this!
+    return memo.at(pairKey); // Hint: You need to change this!
     // ====================================================================
-
   }
 
   // If the memoization table didn't have an entry for this key yet,
@@ -318,10 +327,14 @@ int memoizedLongestPalindromeLength(LengthMemo& memo, const std::string& str, in
   // We can also store this result for memoization purposes.
   int greaterResult = std::max(leftSubproblemResult,rightSubproblemResult);
 
-  // =======================================================================
-  // EXERCISE 3 - PART B - YOUR CODE HERE!
-  //
-  return -1337; // Hint: You need to change this!
+  // const IntPair pairKey = std::make_pair(leftLimit, rightLimit);
+  // memo[std::make_pair(leftLimit, rightLimit - 1)] = leftSubproblemResult;
+  // memo[std::make_pair(leftLimit + 1, rightLimit)] = rightSubproblemResult;
+      // =======================================================================
+      // EXERCISE 3 - PART B - YOUR CODE HERE!
+      //
+  memo[pairKey] = greaterResult;
+  return greaterResult; // Hint: You need to change this!
   // =======================================================================
 }
 
